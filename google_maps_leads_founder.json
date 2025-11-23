@@ -1,0 +1,410 @@
+{
+  "name": "google maps leads founder",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        120,
+        -100
+      ],
+      "id": "807b8c0f-f463-405d-99a6-37e86413876e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"includeWebResults\": false,\n    \"language\": \"en\",\n    \"locationQuery\": \"{{ $json.query.location }}\",\n    \"maxCrawledPlacesPerSearch\": {{ $json.query.leadCount }},\n    \"maxImages\": 0,\n    \"maximumLeadsEnrichmentRecords\": 0,\n    \"scrapeContacts\": false,\n    \"scrapeDirectories\": false,\n    \"scrapeImageAuthors\": false,\n    \"scrapePlaceDetailPage\": false,\n    \"scrapeReviewsPersonalData\": true,\n    \"scrapeTableReservationProvider\": false,\n    \"searchStringsArray\": [\n        \"{{ $json.query.target }}\"\n    ],\n    \"skipClosedPlaces\": false\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -200,
+        -100
+      ],
+      "id": "7e9c91a5-ee8f-4ed5-b543-d224e54806c7",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "path": "6d30225f-aeb3-4d7f-a553-1ff860d2e9d8",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -580,
+        -100
+      ],
+      "id": "c50cc368-d98a-4fd7-8b2a-3e31c5960863",
+      "name": "Webhook",
+      "webhookId": "6d30225f-aeb3-4d7f-a553-1ff860d2e9d8"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -40,
+        -100
+      ],
+      "id": "bd77cfef-08c5-4f7e-9b16-6a0d8366a8b9",
+      "name": "30 seconds",
+      "webhookId": "906cdd0b-d1b4-4729-b986-a0e4355aee1a"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bf996bd9-558b-4ff5-ab22-ed62c537dfff",
+              "leftValue": "={{ $json.phone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        -100
+      ],
+      "id": "416cd8de-4b61-45bf-a029-7163e5750080",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Sending request through the website \n",
+        "height": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -220
+      ],
+      "id": "37468e7c-6fbb-4aa8-9643-fb3a1cc42ce3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "##      ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎    Getting the ouptut",
+        "height": 300,
+        "width": 580,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -200
+      ],
+      "id": "2a86865c-ea04-4414-a345-397f57c42b7d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Classifying",
+        "height": 280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        420,
+        -200
+      ],
+      "id": "c0aab59c-4ec5-4a01-9e6b-abdef8acdb68",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Ay9112Bx8URSw0Xcdtyx-tkN0nQLdLAiPHPbxEbbecU",
+          "mode": "list",
+          "cachedResultName": "Google maps leads",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Sub Category": "={{ $json['Sub cat'] }}",
+            "Address": "={{ $json.Address }}",
+            "Contact": "={{ $json.phone }}",
+            "Google maps rating": "={{ $json['google rating'] }}",
+            "URL": "={{ $json.URL }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sub Category",
+              "displayName": "Sub Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Google maps rating",
+              "displayName": "Google maps rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1140,
+        -240
+      ],
+      "id": "45babf52-09ef-4b4d-a7a6-4d9ecc5b1f00",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vyXZoyChit3C1MS7",
+          "name": "shaurya.busybee@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "id": "7813edc7-6cd0-447a-8bcc-f72d428bb9ca",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "344fee4a-a4f3-4bac-9b07-9063fada541f",
+              "name": "phone",
+              "value": "='{{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "68a03b28-c8bf-42ab-9971-6f7d0b758f7e",
+              "name": "Name",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "48adc6ec-d931-4e03-9c68-20f0a8f0a985",
+              "name": "Address",
+              "value": "={{ $json.address }}",
+              "type": "string"
+            },
+            {
+              "id": "44c08f7b-cc80-4b1c-a8c6-e71f5e29b3ee",
+              "name": "Sub cat",
+              "value": "={{ $json.categoryName }}",
+              "type": "string"
+            },
+            {
+              "id": "11301376-8790-49f8-a17a-21e0331683b2",
+              "name": "google rating",
+              "value": "={{ $json.totalScore }}",
+              "type": "string"
+            },
+            {
+              "id": "f34ea95b-a055-4180-a0d8-99c70c6e4537",
+              "name": "URL",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        840,
+        -280
+      ],
+      "id": "52330587-0c0d-4619-b829-51eb71519dfb",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "30 seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "30 seconds": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d4531e0e-7fdb-4a66-bdb7-d1980d5b196e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fad1a47f02c81d314754cb29cf717863c58b64972d81e2e95c152f4d1847667e"
+  },
+  "id": "Q1FH3wgOhugYAsMf",
+  "tags": [
+    {
+      "createdAt": "2025-08-06T19:46:53.852Z",
+      "updatedAt": "2025-08-06T19:46:53.852Z",
+      "id": "bnUwLDpOOJ5Mgq4U",
+      "name": "Sales"
+    }
+  ]
+}
